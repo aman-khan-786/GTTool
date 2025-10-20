@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ORG_GRADLE_JVMARGS: "-Xmx4g -XX:MaxMetaspaceSize=512m"  # Heap & metaspace increase via env
 
     steps:
     - name: Checkout code
@@ -61,11 +59,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
-    - name: Clean Gradle cache
-      run: ./gradlew clean --no-daemon
-
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace --no-daemon -Porg.gradle.parallel=false  # -P for parallel=false property, no parse error
+      run: ./gradlew assembleDebug --stacktrace  # Simple command, properties handle parallel/daemon
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
