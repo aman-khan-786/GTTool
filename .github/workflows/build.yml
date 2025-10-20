@@ -59,8 +59,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
+    - name: Clean Gradle cache
+      run: ./gradlew clean --no-daemon  # Clean cache to avoid stale daemon issues
+
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace --no-daemon  # Added --no-daemon to fix classloader/daemon crash
+      run: ./gradlew assembleDebug --stacktrace --no-daemon --parallel=false -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"  # Heap increase, parallel off, no daemon
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
