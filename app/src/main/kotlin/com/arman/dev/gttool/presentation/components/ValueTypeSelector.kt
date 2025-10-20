@@ -3,7 +3,6 @@ package com.arman.dev.gttool.presentation.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,8 +25,7 @@ fun ValueTypeSelector(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(8.dp)
     ) {
         // Dropdown for Value Type
         ExposedDropdownMenuBox(
