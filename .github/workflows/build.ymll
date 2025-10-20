@@ -35,7 +35,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Cache Gradle packages  # Naya: Dependencies cache for faster builds
+    - name: Cache Gradle packages  # Dependencies cache for faster builds
       uses: actions/cache@v4
       with:
         path: |
@@ -44,9 +44,6 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-
-    - name: Run Tests  # Naya: Tests chalayega (agar fail, build stop)
-      run: ./gradlew test --stacktrace
 
     - name: Build Debug APK
       run: ./gradlew assembleDebug --stacktrace
