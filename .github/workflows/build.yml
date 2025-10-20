@@ -21,21 +21,29 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34  # Explicit API level for stability
-
-    - name: Accept Android licenses
+    - name: Install Android SDK Command Line Tools
       run: |
-        yes | sdkmanager --licenses
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+        unzip cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+        rm cmdline-tools.zip
+        mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+    - name: Install Android SDK Components
+      run: |
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+        yes | sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
     - name: Install NDK
       run: |
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
         yes | sdkmanager "ndk;25.1.8937393"
 
     - name: Install CMake
       run: |
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
         yes | sdkmanager "cmake;3.22.1"
 
     - name: Grant execute permission for gradlew
